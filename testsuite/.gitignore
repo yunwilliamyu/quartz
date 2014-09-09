@@ -1,0 +1,10 @@
+dict.bin
+dict.bin.sorted
+dict.bin.sorted.swapped
+dict.db
+dict_flt.db
+example1.fastq.filtered_S
+example1.fastq.filtered_S.qual.bz2
+example2.fastq.filtered_S
+example2.fastq.filtered_S.qual.bz2
+

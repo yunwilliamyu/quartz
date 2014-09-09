@@ -1,0 +1,8 @@
+*.swp
+*.o
+generate_dict
+gmon.out
+misra_gries_dict
+dict_txt2bin
+sort_dict_file
+quartz
