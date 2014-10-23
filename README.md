@@ -2,8 +2,8 @@ Copyright (c) 2014 Y. William Yu. All rights reserved.
 
 This package implements the Quartz algorithm described in:
 Y. William Yu, Deniz Yorukoglu, Jian Peng, and Bonnie Berger.
-"Quality Score Compression Improves Genotyping"
-Manuscript submitted for publication.
+"Quality score compression improves genotyping accuracy"
+In press, Nature Biotechnology.
 
 http://quartz.csail.mit.edu/
 
