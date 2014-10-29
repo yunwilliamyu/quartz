@@ -11,13 +11,13 @@ http://quartz.csail.mit.edu/
 Package contents:
 
 Following programs take input in FASTQ format:
-* misra_gries_dict:  builds a dictionary of common k-mers from a corpus by
+* `misra_gries_dict`:  builds a dictionary of common k-mers from a corpus by
                    approximate counting
-* dict_txt2bin:  converts text dictionary to binary format
-* sort_dict_file:  sorts a binary dictionary and outputs it
+* `dict_txt2bin`:  converts text dictionary to binary format
+* `sort_dict_file`:  sorts a binary dictionary and outputs it
                    also swaps the high and low order bits, sorts it, and outputs
 				   the swapped dictionary as well
-* quartz:  uses dictionary to smooth quality values for high confidence
+* `quartz`:  uses dictionary to smooth quality values for high confidence
                    calls as measured by k-mer Hamming distance to a default Q.
 
 -----------------------------
@@ -48,21 +48,21 @@ cd testsuite/
 
 Note: dictionary generation can be very expensive. The authors have already
 generated a high quality human genome dictionary, available for download at
-	http://yunwilliamyu.net/quartz/dec200.bin.sorted.gz
+	http://yunwilliamyu.net/quartz/dec200.bin.sorted.gz  
 	MD5: b8f8409d7bd7fd2beea1ee9d5b68b6d1
 
-	http://yunwilliamyu.net/quartz/dec200.bin.sorted.swapped.gz
+	http://yunwilliamyu.net/quartz/dec200.bin.sorted.swapped.gz  
 	MD5: e7f0dc501ee05dba12cdd2f5ae8540ad
-Naturally, dict.bin.sorted should be replaced by dec200.bin.sorted when using
+Naturally, `dict.bin.sorted` should be replaced by `dec200.bin.sorted` when using
 this dictionary. Note that when generating from a large number of FASTQ files,
 it is sometimes necessary to generate the dictionary in chunks by using the 2nd
-command-line argument of misra_gries_dict, and then combining the resulting files.
+command-line argument of `misra_gries_dict`, and then combining the resulting files.
 
 Quartz performs best on recent NGS Illumina FASTQ reads. As an example, the
 following files from 1000 Genomes Project, for NA12878, were used for the
 manuscript:
-	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_1.filt.fastq.gz
-	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_2.filt.fastq.gz
+	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_1.filt.fastq.gz  
+	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_2.filt.fastq.gz  
 	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461.filt.fastq.gz
 	
 -----------------------------
@@ -108,8 +108,7 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
 
 Preprocessor is centered around generating the dictionary:
 
-`misra_gries_dict`:
-
+`misra_gries_dict`:  
 Usage: `./misra_gries_dict MINCOUNT MASK output_file input_file(s)`
 
 	Approximates the number of times frequent 32-mers appear, outputs two column
@@ -125,18 +124,15 @@ Usage: `./misra_gries_dict MINCOUNT MASK output_file input_file(s)`
 	decrement_misra_gries.py, which takes as first argument the output of this
 	program.
 
-`dict_txt2bin`:
-
-Converts text dictionary to binary
-
+`dict_txt2bin`:  
+Converts text dictionary to binary  
 Usage: `./dict_txt2bin text_dict.db binary_dict.db`
 
 	Converts the 32-mer in the first column of text_dict.db to a 64-bit integer.
 	binary_dict.db has the total number of 32-mers in the dictionary as the
 	first 8 bytes, and each of the rest of the entries following in 8 bytes each.
 
-`sort_dict_file`:
-
+`sort_dict_file`:  
 Usage: `./sort_dict_file input_dict.bin output_dict.bin output_dict_swapped.bin`
 
 	Sorts a dictionary file, outputs it, swaps high and low bits, sorts it, 
