@@ -36,7 +36,9 @@ Preprocessing:
 ```
 
 Quickstart:
-	`./quartz dict.bin.sorted "Q" 8 *.fastq`
+```bash
+./quartz dict.bin.sorted "Q" 8 *.fastq
+```
 
 We also provide a `testsuite/` directory with example FASTQ files to
 demonstrate operation. To run the commented example scripts:
@@ -48,11 +50,14 @@ cd testsuite/
 
 Note: dictionary generation can be very expensive. The authors have already
 generated a high quality human genome dictionary, available for download at
-	http://yunwilliamyu.net/quartz/dec200.bin.sorted.gz  
-	MD5: b8f8409d7bd7fd2beea1ee9d5b68b6d1
+```bash
+http://yunwilliamyu.net/quartz/dec200.bin.sorted.gz  
+MD5: b8f8409d7bd7fd2beea1ee9d5b68b6d1
 
-	http://yunwilliamyu.net/quartz/dec200.bin.sorted.swapped.gz  
-	MD5: e7f0dc501ee05dba12cdd2f5ae8540ad
+http://yunwilliamyu.net/quartz/dec200.bin.sorted.swapped.gz  
+MD5: e7f0dc501ee05dba12cdd2f5ae8540ad
+```
+
 Naturally, `dict.bin.sorted` should be replaced by `dec200.bin.sorted` when using
 this dictionary. Note that when generating from a large number of FASTQ files,
 it is sometimes necessary to generate the dictionary in chunks by using the 2nd
@@ -60,7 +65,7 @@ command-line argument of `misra_gries_dict`, and then combining the resulting fi
 
 Quartz performs best on recent NGS Illumina FASTQ reads. As an example, the
 following files from 1000 Genomes Project, for NA12878, were used for the
-manuscript:
+manuscript:  
 	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_1.filt.fastq.gz  
 	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_2.filt.fastq.gz  
 	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461.filt.fastq.gz
@@ -68,7 +73,7 @@ manuscript:
 -----------------------------
 The main program is quartz:
 
-quartz:
+####quartz:
 Discards likely non-SNP quality scores for known reads.
 
 Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
@@ -108,7 +113,7 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
 
 Preprocessor is centered around generating the dictionary:
 
-`misra_gries_dict`:  
+####misra_gries_dict:  
 Usage: `./misra_gries_dict MINCOUNT MASK output_file input_file(s)`
 
 	Approximates the number of times frequent 32-mers appear, outputs two column
@@ -124,7 +129,7 @@ Usage: `./misra_gries_dict MINCOUNT MASK output_file input_file(s)`
 	decrement_misra_gries.py, which takes as first argument the output of this
 	program.
 
-`dict_txt2bin`:  
+####dict_txt2bin:  
 Converts text dictionary to binary  
 Usage: `./dict_txt2bin text_dict.db binary_dict.db`
 
@@ -132,7 +137,7 @@ Usage: `./dict_txt2bin text_dict.db binary_dict.db`
 	binary_dict.db has the total number of 32-mers in the dictionary as the
 	first 8 bytes, and each of the rest of the entries following in 8 bytes each.
 
-`sort_dict_file`:  
+####sort_dict_file:  
 Usage: `./sort_dict_file input_dict.bin output_dict.bin output_dict_swapped.bin`
 
 	Sorts a dictionary file, outputs it, swaps high and low bits, sorts it, 
