@@ -11,13 +11,13 @@ http://quartz.csail.mit.edu/
 Package contents:
 
 Following programs take input in FASTQ format:
-misra_gries_dict:  builds a dictionary of common k-mers from a corpus by
+* misra_gries_dict:  builds a dictionary of common k-mers from a corpus by
                    approximate counting
-    dict_txt2bin:  converts text dictionary to binary format
-  sort_dict_file:  sorts a binary dictionary and outputs it
+* dict_txt2bin:  converts text dictionary to binary format
+* sort_dict_file:  sorts a binary dictionary and outputs it
                    also swaps the high and low order bits, sorts it, and outputs
 				   the swapped dictionary as well
-          quartz:  uses dictionary to smooth quality values for high confidence
+* quartz:  uses dictionary to smooth quality values for high confidence
                    calls as measured by k-mer Hamming distance to a default Q.
 
 -----------------------------
@@ -25,22 +25,26 @@ Requirements:
 	64 GiB RAM
 
 Compilation:
-	make all
+	`make all`
 
 Preprocessing:
-	./misra_gries_dict MINCOUNT -1 dict.db *.fastq
-	./decrement_misra_gries.py dict.db > dict_flt.db
-	./dict_txt2bin dict_flt.db dict.bin
-	./sort_dict_file dict.bin dict.bin.sorted dict.bin.sorted.swapped
+```bash
+./misra_gries_dict MINCOUNT -1 dict.db *.fastq
+./decrement_misra_gries.py dict.db > dict_flt.db
+./dict_txt2bin dict_flt.db dict.bin
+./sort_dict_file dict.bin dict.bin.sorted dict.bin.sorted.swapped
+```
 
 Quickstart:
-	./quartz dict.bin.sorted "Q" 8 *.fastq
+	`./quartz dict.bin.sorted "Q" 8 *.fastq`
 
-We also provide a testsuite/ directory with example FASTQ files to
+We also provide a `testsuite/` directory with example FASTQ files to
 demonstrate operation. To run the commented example scripts:
-	cd testsuite/
-	./generate_dictionary.sh
-	./run_quartz.sh
+```bash
+cd testsuite/
+./generate_dictionary.sh
+./run_quartz.sh
+```
 
 Note: dictionary generation can be very expensive. The authors have already
 generated a high quality human genome dictionary, available for download at
@@ -66,7 +70,9 @@ The main program is quartz:
 
 quartz:
 Discards likely non-SNP quality scores for known reads.
-Usage: ./quartz dictionary_file [QUAL] [num_threads] input_file(s)
+
+Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
+
 	Input is assumed to be a standard FASTQ file.
 
 	Output will be modified FASTQ files named [input_file].filtered_[QUAL],
@@ -102,8 +108,10 @@ Usage: ./quartz dictionary_file [QUAL] [num_threads] input_file(s)
 
 Preprocessor is centered around generating the dictionary:
 
-misra_gries_dict:
-Usage: ./misra_gries_dict MINCOUNT MASK output_file input_file(s)
+`misra_gries_dict`:
+
+Usage: `./misra_gries_dict MINCOUNT MASK output_file input_file(s)`
+
 	Approximates the number of times frequent 32-mers appear, outputs two column
 	format, with the first column specifying the 32-mer and the second column
 	the number of times it appears in the corpus + decrement. MINCOUNT specifies
@@ -117,15 +125,20 @@ Usage: ./misra_gries_dict MINCOUNT MASK output_file input_file(s)
 	decrement_misra_gries.py, which takes as first argument the output of this
 	program.
 
-dict_txt2bin:
+`dict_txt2bin`:
+
 Converts text dictionary to binary
-Usage: ./dict_txt2bin text_dict.db binary_dict.db
+
+Usage: `./dict_txt2bin text_dict.db binary_dict.db`
+
 	Converts the 32-mer in the first column of text_dict.db to a 64-bit integer.
 	binary_dict.db has the total number of 32-mers in the dictionary as the
 	first 8 bytes, and each of the rest of the entries following in 8 bytes each.
 
-sort_dict_file:
-Usage: ./sort_dict_file input_dict.bin output_dict.bin output_dict_swapped.bin
+`sort_dict_file`:
+
+Usage: `./sort_dict_file input_dict.bin output_dict.bin output_dict_swapped.bin`
+
 	Sorts a dictionary file, outputs it, swaps high and low bits, sorts it, 
 	and outputs it.
 
