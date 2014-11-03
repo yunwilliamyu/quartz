@@ -22,7 +22,9 @@ Following programs take input in FASTQ format:
 
 -----------------------------
 Requirements:
-	64 GiB RAM
+*	64 GiB RAM
+*	C++11 compiler
+*	BOOST C++ library headers (only for misra_gries_dict)
 
 Compilation:
 	`make all`
