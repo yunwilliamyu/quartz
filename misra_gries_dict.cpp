@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Y. William Yu. All rights reserved. */
+/* Copyright (c) 2013-2014 Y. William Yu. Released under CC0 1.0 Universal. */
 /* misra_gries_dict.cpp
    Does a misra-gries sketch with 2^32 counters to count the most frequent 32-mers appear.
    Outputs all 32-mers appearing with high frequency

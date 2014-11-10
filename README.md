@@ -1,4 +1,4 @@
-Copyright (c) 2014 Y. William Yu. All rights reserved.
+Copyright (c) 2014 Y. William Yu. Released under CC0 1.0 Universal.
 
 This package implements the Quartz algorithm described in:
 Y. William Yu, Deniz Yorukoglu, Jian Peng, and Bonnie Berger.

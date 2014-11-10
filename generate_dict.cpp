@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Y. William Yu. All rights reserved. */
+/* Copyright (c) 2013-2014 Y. William Yu. Released under CC0 1.0 Universal. */
 /* generate_dict.cpp
    Counts the number of times 32-mers appear.
    Outputs all 32-mers appearing with multiplicity greater than some threshold.

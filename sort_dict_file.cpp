@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Y. William Yu. All rights reserved. */
+/* Copyright (c) 2013-2014 Y. William Yu. Released under CC0 1.0 Universal. */
 /* sort_dict_file.cpp
  * Sorts a (binary) dictionary file
 */

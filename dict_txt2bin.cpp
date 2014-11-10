@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Y. William Yu. All rights reserved. */
+/* Copyright (c) 2013-2014 Y. William Yu. Released under CC0 1.0 Universal. */
 /* dict_txt2bin.cpp
  * Converts text based dictionary to binary 64-bit numbers (no counts)
  */
