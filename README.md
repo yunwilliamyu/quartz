@@ -59,6 +59,8 @@ MD5: 331834cc5bbe7e502e6c2572fdae7a44
 http://giant.csail.mit.edu/quartz/dec200.bin.sorted.swapped.gz  
 MD5: e7f0dc501ee05dba12cdd2f5ae8540ad
 ```
+Note that both of these dictionaries must be present in the same directory for
+Quartz to run. Make sure to download and gunzip them both.
 
 Naturally, `dict.bin.sorted` should be replaced by `dec200.bin.sorted` when using
 this dictionary. Note that when generating from a large number of FASTQ files,
