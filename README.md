@@ -53,10 +53,10 @@ cd testsuite/
 Note: dictionary generation can be very expensive. The authors have already
 generated a high quality human genome dictionary, available for download at
 ```bash
-http://yunwilliamyu.net/quartz/dec200.bin.sorted.gz  
+http://giant.csail.mit.edu/quartz/dec200.bin.sorted.gz  
 MD5: b8f8409d7bd7fd2beea1ee9d5b68b6d1
 
-http://yunwilliamyu.net/quartz/dec200.bin.sorted.swapped.gz  
+http://giant.csail.mit.edu/quartz/dec200.bin.sorted.swapped.gz  
 MD5: e7f0dc501ee05dba12cdd2f5ae8540ad
 ```
 
