@@ -74,14 +74,19 @@ void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint3
 
 // Note that dict_fn must contain a dictionary (preferably sorted) of 64-bit integers, with first value being the number of remaining intgers in the file (i.e. size of dictionary)
 // Additionally, [dict_fn].swapped must contain the same dictionary, with low and high 32-bits swapped, in the same format, and sorted accordingly
-read_entry_database::read_entry_database (std::string dict_fn) {
+read_entry_database::read_entry_database (std::string dict_fn, bool lm) {
+    lowmem = lm;
 	
 	dictionary_load(dict_fn, dict_low, jumpgate_low);
 	
 	std::string dict_swapped_fn = dict_fn;
 	dict_swapped_fn.append(".swapped");
 
-	dictionary_load(dict_swapped_fn, dict_high, jumpgate_high);
+    if (lowmem) {
+        std::cerr << "Running in low memory mode; not loading swapped dictionary." << std::endl;
+    } else {
+    	dictionary_load(dict_swapped_fn, dict_high, jumpgate_high);
+    }
 }
 
 inline readseq mask(int i) {return ~(3UL << (2*i));}
@@ -125,6 +130,18 @@ std::vector<int> read_entry_database::check_hamming_neighbors(const readseq work
 		}
 	}
 	// Again preventing duplication of work for count_swapped
+    if (lowmem) {
+		for (int i=16; i<32; ++i) {
+			for (int j=0; j<4; ++j) {
+				test = testers(i,j,work);
+				if((test!=work)&&count_high(test)) {
+					ans_vec[i]=i;
+					break;
+				}
+			}
+		}
+    }
+    else
 	{
 		const uint32_t *x_low =  ((uint32_t*) &work);
 		const uint32_t lb = jumpgate_high[*x_low];
@@ -176,6 +193,11 @@ int read_entry_database::count_low (const uint64_t x)  const {
 
 // Does the same thing as count, but looks it up instead in the swapped copy
 int read_entry_database::count_high (const uint64_t x)  const {
+    
+    if (lowmem) {
+        return count_low(x);
+    }
+
 	const uint32_t * x_low = ((uint32_t*) &x);
 	const uint32_t * x_high = ((uint32_t*) &x)+1;
 	//const uint32_t x_low = low_bits(x);

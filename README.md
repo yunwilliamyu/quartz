@@ -80,7 +80,7 @@ The main program is quartz:
 ####quartz:
 Discards likely non-SNP quality scores for known reads.
 
-Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
+Usage: `./quartz dictionary_file [QUAL] [num_threads] [mem_option] input_file(s)`
 
 	Input is assumed to be a standard FASTQ file.
 
@@ -114,6 +114,10 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] input_file(s)`
 	On our machines, disk I/O becomes a bottleneck at around 8 threads. Using
 	more threads than your disk I/O can support is not recommended and may have
 	a detrimental effect on speed.
+
+	[mem_option] specifies the memory mode that should be used. If set to
+	'0', will use low-memory mode (<64GB); any other option will use high-
+	memory-mode, which requires ~70GB of RAM
 
 Preprocessor is centered around generating the dictionary:
 

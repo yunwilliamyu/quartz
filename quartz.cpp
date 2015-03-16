@@ -240,7 +240,7 @@ int main( int argc, char *argv[])
 	// Make sure static variables are all properly initialized first
 	if (argc < 5) {
 		std::cerr << "Discards non-SNP quality values for known reads." << std::endl;
-		std::cerr << "Usage: " << argv[0] << " [dictionary_file] [qual] [num_threads] input_file(s)" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " [dictionary_file] [qual] [num_threads] [mem_option] input_file(s)" << std::endl;
 		std::cerr << "\tInput is assumed to be either a FASTQ file." << std::endl
 				  << std::endl
 				  << "\tOutput will be modified FASTQ files named [input_file].filtered_[qual]," <<std::endl
@@ -258,18 +258,25 @@ int main( int argc, char *argv[])
 				  << "\tthat disk I/O is usually the bottleneck for high thread number. In our" << std::endl
 				  << "\ttests we found [num_thread]=8 to fully max out disk I/O. YMMV" <<std::endl
 				  << std::endl
+				  << "\t[mem_option] specifies the memory mode that should be used. If set to" << std::endl
+				  << "\t'0', will use low-memory mode (<64GB); any other option will use high-" << std::endl
+				  << "\tmemory-mode, which requires ~70GB of RAM" <<std::endl
+				  << std::endl
 				  << "This package is made available solely for academic use." << std::endl
-				  << "Copyright (c) 2014 Yun William Yu. All rights reserved" << std::endl
-				  << "Quartz version 0.1.1" << std::endl;
+				  << "Copyright (c) 2015 Yun William Yu. All rights reserved" << std::endl
+				  << "Quartz version 0.2.1" << std::endl;
 		exit(-1);
 	}
 	rev_compl(0);
 	subst_find(0,0);
 
+    bool lowmem = false;
+    if (atoi(argv[4])==0)
+        lowmem = true;
 
 	std::cerr << time_now() << std::endl;
 	std::string dict_filename = argv[1];
-	read_entry_database red_whole(dict_filename);
+	read_entry_database red_whole(dict_filename, lowmem);
 
 	
 	std::FILE * inFile;
@@ -280,7 +287,7 @@ int main( int argc, char *argv[])
 	int num_threads = atoi(argv[3]);
 
 	std::vector<readseq> mer_list;
-	for (int argwalker = 4; argwalker < argc; ++argwalker) {
+	for (int argwalker = 5; argwalker < argc; ++argwalker) {
 		std::string infile_name = argv[argwalker];
 
 		if (infile_name == "-") {

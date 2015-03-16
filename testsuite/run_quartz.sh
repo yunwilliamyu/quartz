@@ -7,8 +7,9 @@ then
 fi
 
 echo In this example, we compress the corpus we used to generate the dictionary:
-echo "../quartz dict.bin.sorted 'S' 8 *.fastq"
-../quartz dict.bin.sorted 'S' 8 *.fastq
+echo "(Quartz here is run in low memory mode; to run in high-memory mode, replace 0 with 1 in the following line)"
+echo "../quartz dict.bin.sorted 'S' 8 0 *.fastq"
+../quartz dict.bin.sorted 'S' 8 0 *.fastq
 echo
 
 echo Compression is now done, but let\'s see how well we did using BZIP2:

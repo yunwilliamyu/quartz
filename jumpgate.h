@@ -30,10 +30,12 @@ class read_entry_database {
 		void dictionary_load(std::string dict_fn, std::vector<uint32_t> & dict_vec, std::vector<uint32_t> & jumpgate);
 	public:
 		// Note that dict_fn must contain a *sorted* dictionary of 64-bit integers, with first value being the number of remaining intgers in the file (i.e. size of dictionary) Also, dict_fn.swapped should be the same dictionary, but with low and higher bits swapped and appropriately resorted
-		read_entry_database (std::string dict_fn);
+		read_entry_database (std::string dict_fn, bool lm);
 		int count_low (uint64_t x) const;
 		int count_high (uint64_t x) const;
 		std::vector<int> check_hamming_neighbors(const readseq work);
+        // If lowmem = true, then count_high is just a call to count_low and saves memory
+        bool lowmem;
 };
 
 
