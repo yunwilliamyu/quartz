@@ -116,8 +116,8 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] [mem_option] input_file(s)
 	a detrimental effect on speed.
 
 	[mem_option] specifies the memory mode that should be used. If set to
-	'0', will use low-memory mode (<64GB); any other option will use high-
-	memory-mode, which requires ~70GB of RAM
+	'0', will use low-memory mode (<40GB); any other option will use high-
+	memory-mode, which requires ~64GB of RAM
 
 Preprocessor is centered around generating the dictionary:
 

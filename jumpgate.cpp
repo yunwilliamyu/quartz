@@ -5,6 +5,12 @@
 #include "jumpgate.h"
 #include <parallel/algorithm>
 
+template <typename T>
+void FreeAll( T & t ) {
+    T tmp;
+    t.swap( tmp );
+}
+
 // Creating jumpgate vector
 std::vector<uint32_t> create_jumpgate(uint64_t *dict, unsigned long num_dict_entries) {
 	const uint32_t neg_one = -1;
@@ -60,15 +66,45 @@ void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint3
 //		std::cerr << "Sorting dictionary (dictionary not sorted; please make sure to sort the dictionary first next time)" << std::endl;
 //		__gnu_parallel::sort(dict.begin(),dict.end());
 	} */
-	jumpgate=create_jumpgate(&dict[0], num_dict_entries);
+    
 	// Create jumpgate with high bits pointing to low bits
-	// Create low_bits
+	jumpgate=create_jumpgate(&dict[0], num_dict_entries);
+    
+    // Code here for better memory management
+    // Release memory from dict and reread from disk
+    FreeAll(dict);
+    dict.resize(4096);
+    
+    // Create low_bits
 	std::cerr << "Creating truncated dictionary" << std::endl;
 	dict_vec.resize(num_dict_entries);
-#pragma omp parallel for
-	for (unsigned int i=0; i<num_dict_entries; ++i) {
-		dict_vec[i]=low_bits(dict[i]);
+
+	std::ifstream f_dict2 (dict_fn, std::ios::in | std::ios::binary);
+	if (f_dict2.good()) {
+		f_dict2.read( (char*) &num_dict_entries, sizeof(num_dict_entries));
+
+        long remaining_entries = num_dict_entries;
+        long i = 0;
+        long buffer_num = 0;
+        while (remaining_entries > 0) {
+            buffer_num = (4096<remaining_entries)?4096 : remaining_entries;
+            remaining_entries = remaining_entries - buffer_num;
+		    f_dict2.read( (char*) (&dict[0]), buffer_num*sizeof(readseq));
+            int j = 0;
+            while (j < buffer_num) {
+                dict_vec[i++]=low_bits(dict[j++]);
+            }
+        }
+        f_dict2.close();
+        assert(i == num_dict_entries);
+	} else {
+		std::cerr << "Dictionary could not be opened. Please remedy." << std::endl;
+		exit(-25);
 	}
+
+//	for (unsigned int i=0; i<num_dict_entries; ++i) {
+//		dict_vec[i]=low_bits(dict[i]);
+//	}
 	//munmap(dict_file,num_dict_entries + 1);
 }
 

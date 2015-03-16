@@ -238,7 +238,7 @@ int main( int argc, char *argv[])
 {
 	int64checker();
 	// Make sure static variables are all properly initialized first
-	if (argc < 5) {
+	if (argc < 6) {
 		std::cerr << "Discards non-SNP quality values for known reads." << std::endl;
 		std::cerr << "Usage: " << argv[0] << " [dictionary_file] [qual] [num_threads] [mem_option] input_file(s)" << std::endl;
 		std::cerr << "\tInput is assumed to be either a FASTQ file." << std::endl
@@ -259,12 +259,12 @@ int main( int argc, char *argv[])
 				  << "\ttests we found [num_thread]=8 to fully max out disk I/O. YMMV" <<std::endl
 				  << std::endl
 				  << "\t[mem_option] specifies the memory mode that should be used. If set to" << std::endl
-				  << "\t'0', will use low-memory mode (<64GB); any other option will use high-" << std::endl
-				  << "\tmemory-mode, which requires ~70GB of RAM" <<std::endl
+				  << "\t'0', will use low-memory mode (~40GiB of RAM); any other option will use high-" << std::endl
+				  << "\tmemory-mode, which requires ~64GiB of RAM" <<std::endl
 				  << std::endl
 				  << "This package is made available solely for academic use." << std::endl
 				  << "Copyright (c) 2015 Yun William Yu. All rights reserved" << std::endl
-				  << "Quartz version 0.2.1" << std::endl;
+				  << "Quartz version 0.2.2" << std::endl;
 		exit(-1);
 	}
 	rev_compl(0);
