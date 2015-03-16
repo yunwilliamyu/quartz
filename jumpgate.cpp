@@ -17,45 +17,45 @@ void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint3
 	//jumpgate=create_jumpgate(&dict[0], num_dict_entries);
 	const uint32_t neg_one = -1;
 	std::cerr << "Allocating jumpgate ... ";
-	std::vector<uint32_t> jg;
+	//std::vector<uint32_t> jg;
 	uint64_t jg_size = (1UL << 32);
-	jg.resize(jg_size, neg_one);
+	jumpgate.resize(jg_size, neg_one);
     
     // Code here for better memory management
     // Release memory from dict and reread from disk
 	std::vector<uint64_t> dict;
-    dict.resize(65536);
+    dict.resize(BUFFER_SIZE);
     
     // Create low_bits & populate waypoints
 	std::cerr << "Creating truncated dictionary / populating waypoints ... ";
 
     unsigned long num_dict_entries = 0;
-	std::ifstream f_dict2 (dict_fn, std::ios::in | std::ios::binary);
-	if (f_dict2.good()) {
-		f_dict2.read( (char*) &num_dict_entries, sizeof(num_dict_entries));
+	std::ifstream f_dict (dict_fn, std::ios::in | std::ios::binary);
+	if (f_dict.good()) {
+		f_dict.read( (char*) &num_dict_entries, sizeof(num_dict_entries));
         dict_vec.resize(num_dict_entries);
 
         long remaining_entries = num_dict_entries;
         long i = 0;
         long buffer_num = 0;
         while (remaining_entries > 0) {
-            buffer_num = (65536<remaining_entries)?65536 : remaining_entries;
+            buffer_num = (BUFFER_SIZE<remaining_entries)?BUFFER_SIZE : remaining_entries;
             remaining_entries = remaining_entries - buffer_num;
-		    f_dict2.read( (char*) (&dict[0]), buffer_num*sizeof(readseq));
+		    f_dict.read( (char*) (&dict[0]), buffer_num*sizeof(readseq));
             int j = 0;
             while (j < buffer_num) {
                 // Creating low_bits
                 dict_vec[i]=low_bits(dict[j]);
                 // Populating waypoints
                 uint32_t curr_high = high_bits(dict[j]);
-                if (jg[curr_high]>i)
-                    jg[curr_high]=i;
+                if (jumpgate[curr_high]>i)
+                    jumpgate[curr_high]=i;
                 // Increment both counters
                 i++;
                 j++;
             }
         }
-        f_dict2.close();
+        f_dict.close();
         assert(i == num_dict_entries);
 	} else {
 		std::cerr << "Dictionary could not be opened. Please remedy." << std::endl;
@@ -65,13 +65,13 @@ void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint3
 	std::cerr << "Filling in remainder ..." << std::endl;
 	uint32_t curr_high = num_dict_entries;
 	for (int64_t k = jg_size - 1; k>=0; --k) {
-		if (jg[k]==neg_one)
-			jg[k]=curr_high;
+		if (jumpgate[k]==neg_one)
+			jumpgate[k]=curr_high;
 		else
-			curr_high = jg[k];
+			curr_high = jumpgate[k];
 	} 
 
-    jumpgate=jg;
+    //jumpgate=jg;
 //	for (unsigned int i=0; i<num_dict_entries; ++i) {
 //		dict_vec[i]=low_bits(dict[i]);
 //	}

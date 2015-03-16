@@ -4,6 +4,7 @@
 
 #include "global.h"
 #include <fstream>
+#define BUFFER_SIZE 65536
 
 // Creating jumpgate vector (for quick traversal of sorted dictionary)
 std::vector<uint32_t> create_jumpgate(uint64_t *dict);
