@@ -11,88 +11,48 @@ void FreeAll( T & t ) {
     t.swap( tmp );
 }
 
-// Creating jumpgate vector
-std::vector<uint32_t> create_jumpgate(uint64_t *dict, unsigned long num_dict_entries) {
+void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint32_t> &dict_vec, std::vector<uint32_t> &jumpgate) {
+    
+	// Create jumpgate with high bits pointing to low bits
+	//jumpgate=create_jumpgate(&dict[0], num_dict_entries);
 	const uint32_t neg_one = -1;
 	std::cerr << "Allocating jumpgate ... ";
 	std::vector<uint32_t> jg;
 	uint64_t jg_size = (1UL << 32);
 	jg.resize(jg_size, neg_one);
-	
-	std::cerr << "Populating waypoints ... ";
-#pragma omp parallel for
-	for (uint64_t j = 0; j<num_dict_entries; ++j) {
-		uint32_t curr_high = high_bits(dict[j]);
-		//if (jg[curr_high]==neg_one)
-		if (jg[curr_high]>j)
-			jg[curr_high]=j;
-	}
-	std::cerr << "Filling in remainder ..." << std::endl;
-	uint32_t curr_high = num_dict_entries;
-	for (int64_t k = jg_size - 1; k>=0; --k) {
-		if (jg[k]==neg_one)
-			jg[k]=curr_high;
-		else
-			curr_high = jg[k];
-	} 
-	return jg;
-}
-
-void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint32_t> &dict_vec, std::vector<uint32_t> &jumpgate) {
-	//uint64_t *dict_file = dictionary_mmap(dict_fn);
-	//uint64_t num_dict_entries = dict_file[0];
-	//uint64_t *dict = dict_file + 1;
-	std::vector<uint64_t> dict;
-	// Read number of entries in dictionary
-	std::cerr << "Loading dictionary: " << dict_fn << std::endl;
-	std::ifstream f_dict (dict_fn, std::ios::in | std::ios::binary);
-	unsigned long num_dict_entries = 0;
-	if (f_dict.good()) {
-		f_dict.read( (char*) &num_dict_entries, sizeof(num_dict_entries));
-		dict.resize(num_dict_entries);
-		f_dict.read( (char*) (&dict[0]), num_dict_entries*sizeof(readseq));
-		f_dict.close();
-	} else {
-		std::cerr << "Dictionary could not be opened. Please remedy." << std::endl;
-		exit(-25);
-	}
-	// We'll just assume the dictionary is sorted
-	std::cerr << "Assuming dictionary " << dict_fn << " is sorted. Behavior is undefined if this assumption is false." << std::endl;
-	// Check for sortedness
-	/*std::cerr << "Checking to make sure dictionary " << dict_fn << " is sorted" << std::endl;
-	if (!(std::is_sorted(dict.begin(),dict.end()))) {
-		std::cerr << "Dictionary must be sorted. Exiting now." << std::endl;
-		exit(-15); 
-//		std::cerr << "Sorting dictionary (dictionary not sorted; please make sure to sort the dictionary first next time)" << std::endl;
-//		__gnu_parallel::sort(dict.begin(),dict.end());
-	} */
-    
-	// Create jumpgate with high bits pointing to low bits
-	jumpgate=create_jumpgate(&dict[0], num_dict_entries);
     
     // Code here for better memory management
     // Release memory from dict and reread from disk
-    FreeAll(dict);
-    dict.resize(4096);
+	std::vector<uint64_t> dict;
+    dict.resize(65536);
     
-    // Create low_bits
-	std::cerr << "Creating truncated dictionary" << std::endl;
-	dict_vec.resize(num_dict_entries);
+    // Create low_bits & populate waypoints
+	std::cerr << "Creating truncated dictionary / populating waypoints ... ";
 
+    unsigned long num_dict_entries = 0;
 	std::ifstream f_dict2 (dict_fn, std::ios::in | std::ios::binary);
 	if (f_dict2.good()) {
 		f_dict2.read( (char*) &num_dict_entries, sizeof(num_dict_entries));
+        dict_vec.resize(num_dict_entries);
 
         long remaining_entries = num_dict_entries;
         long i = 0;
         long buffer_num = 0;
         while (remaining_entries > 0) {
-            buffer_num = (4096<remaining_entries)?4096 : remaining_entries;
+            buffer_num = (65536<remaining_entries)?65536 : remaining_entries;
             remaining_entries = remaining_entries - buffer_num;
 		    f_dict2.read( (char*) (&dict[0]), buffer_num*sizeof(readseq));
             int j = 0;
             while (j < buffer_num) {
-                dict_vec[i++]=low_bits(dict[j++]);
+                // Creating low_bits
+                dict_vec[i]=low_bits(dict[j]);
+                // Populating waypoints
+                uint32_t curr_high = high_bits(dict[j]);
+                if (jg[curr_high]>i)
+                    jg[curr_high]=i;
+                // Increment both counters
+                i++;
+                j++;
             }
         }
         f_dict2.close();
@@ -102,6 +62,16 @@ void read_entry_database::dictionary_load(std::string dict_fn, std::vector<uint3
 		exit(-25);
 	}
 
+	std::cerr << "Filling in remainder ..." << std::endl;
+	uint32_t curr_high = num_dict_entries;
+	for (int64_t k = jg_size - 1; k>=0; --k) {
+		if (jg[k]==neg_one)
+			jg[k]=curr_high;
+		else
+			curr_high = jg[k];
+	} 
+
+    jumpgate=jg;
 //	for (unsigned int i=0; i<num_dict_entries; ++i) {
 //		dict_vec[i]=low_bits(dict[i]);
 //	}
