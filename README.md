@@ -1,9 +1,9 @@
-Copyright (c) 2014 Y. William Yu. Released under CC0 1.0 Universal.
+Copyright (c) 2014-2015 Y. William Yu. Released under CC0 1.0 Universal.
 
 This package implements the Quartz algorithm described in:
 Y. William Yu, Deniz Yorukoglu, Jian Peng, and Bonnie Berger.
-"Quality score compression improves genotyping accuracy"
-In press, Nature Biotechnology.
+"Quality score compression improves genotyping accuracy",
+Nature Biotechnology 33, no. 3 (2015): 240-243.
 
 http://quartz.csail.mit.edu/
 
@@ -118,7 +118,7 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] [mem_option] input_file(s)
 	a detrimental effect on speed.
 
 	[mem_option] specifies the memory mode that should be used. If set to
-	'0', will use low-memory mode (<40GB); any other option will use high-
+	'0', will use low-memory mode (<40GB); setting to '1' will use high-
 	memory-mode, which requires ~64GB of RAM. However, note that because of the
 	way the kernel handles disk caching and swap space, you should not use high
 	memory mode if you have only 64GB of RAM unless you also disable swap. To run
