@@ -39,7 +39,7 @@ Preprocessing:
 
 Quickstart:
 ```bash
-./quartz dict.bin.sorted "Q" 8 *.fastq
+./quartz dict.bin.sorted "Q" 8 0 *.fastq
 ```
 
 We also provide a `testsuite/` directory with example FASTQ files to
