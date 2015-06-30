@@ -72,9 +72,9 @@ command-line argument of `misra_gries_dict`, and then combining the resulting fi
 Quartz performs best on recent NGS Illumina FASTQ reads. As an example, the
 following files from 1000 Genomes Project, for NA12878, were used for the
 manuscript:  
-	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_1.filt.fastq.gz  
-	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461_2.filt.fastq.gz  
-	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/data/NA12878/sequence_read/SRR622461.filt.fastq.gz
+	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/sequence_read/SRR622461_1.filt.fastq.gz  
+	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/sequence_read/SRR622461_2.filt.fastq.gz  
+	ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/sequence_read/SRR622461.filt.fastq.gz
 	
 -----------------------------
 The main program is quartz:
