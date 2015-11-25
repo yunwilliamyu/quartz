@@ -4,7 +4,7 @@ In spirit, all that you need is a list of common 32-mers in a large corpus of re
 
 The authors provide two tools for generating this list from a corpus of FASTQ files. generate_dict.cpp does this naively by counting all 32-mers and then filtering by some user-determined threshold for frequency. This works for small datasets, but will require extremely large amounts of RAM.
 
-misra_gries_dict.cpp implements a version of the Misra-Gries approximate counting scheme and also allows counting of only a subset of 32-mers in each pass, which significantly decreases memory usage. The counting is no longer exact, but should still suffice for heavy hitters.
+misra_gries_dict.cpp implements a version of the Misra-Gries approximate counting scheme and also allows counting of only a subset of 32-mers in each pass, which significantly decreases memory usage. The counting is no longer exact, but should still suffice for heavy hitters. This decreased memory usage comes at the cost of lowered counting accuracy and requiring multiple passes, which significantly increases runtime. The decrease in accuracy is given by the decrement counter, and you may have to play with the COUNTER_QUOTIENT constant in the source to get sufficient accuracy for some choices of 32-mer filter masks.
 
 As a first approximation, given a corpus of reads from many individuals of the species with total depth-of-coverage D, choosing all 32-mers that appear around D/5 times seems to give relatively reasonable results.
 
