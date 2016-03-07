@@ -25,7 +25,7 @@ Requirements:
 *	64 GiB RAM
 *	C++11 compiler
 *	BOOST C++ library headers (only for misra_gries_dict)
-Special note: because of the disk cache, Quartz should be run in low memory mode on machines with only 64 GiB RAM unless you disable swap. i.e. high memory mode will work on 64 GiB only if swap is *disabled*. Otherwise, 96 GiB RAM are recommended for high-memory mode to prevent the kernel from swapping the dictionary out to disk.
+Special note: because of the disk cache, Quartz should be run in low memory mode on machines with only 64 GiB RAM unless you disable swap. i.e. high memory mode will work on 64 GiB only if swap is *disabled*. Otherwise, 96 GiB RAM are recommended for high-memory mode to prevent the kernel from swapping the dictionary out to disk. (Quartz itself uses ~27 and ~54 GB of RAM for respectively low and high memory settings)
 
 
 Compilation:
@@ -118,8 +118,8 @@ Usage: `./quartz dictionary_file [QUAL] [num_threads] [mem_option] input_file(s)
 	a detrimental effect on speed.
 
 	[mem_option] specifies the memory mode that should be used. If set to
-	'0', will use low-memory mode (<40GB); setting to '1' will use high-
-	memory-mode, which requires ~64GB of RAM. However, note that because of the
+	'0', will use low-memory mode (<32GB); setting to '1' will use high-
+	memory-mode, which requires <64GB of RAM. However, note that because of the
 	way the kernel handles disk caching and swap space, you should not use high
 	memory mode if you have only 64GB of RAM unless you also disable swap. To run
 	in high memory mode with swap active, we recommend at least 96GB of RAM.
